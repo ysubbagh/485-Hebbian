@@ -33,3 +33,5 @@ else
     disp("Patterns are NOT orthogonal!");
 end
 
+
+%the method does work a lot better than expected

@@ -22,4 +22,8 @@ disp(network.weights);
 disp("output: ");
 disp(output);
 
+%the network does not perform as expected, it should be better as their not
+%orthogoal but becuase they are linearly independatn it casues an issues
+%and the output without manipulation results in incorrect trainig
+
 

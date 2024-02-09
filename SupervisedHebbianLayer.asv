@@ -26,7 +26,7 @@ classdef SupervisedHebbianLayer
         function output = forward(this, input)
             output = zeros(this.inputSize, 1);
             for i = 1:this.inputSize
-                n = this.weights(i, :) * input(i);
+                n = this.weights(i, :) * input;
                 output(i) = this.doFunc(n);
             end
         end
@@ -41,7 +41,11 @@ classdef SupervisedHebbianLayer
 
         %training using the pseudoinverse rule
         function this = pseudoInverseRule(this, input, target)
-            this.weights = target * (inv(input' * input) * input');
+            this.weights = target * pinv(input);
+            %becuase reformati
+            this.weights = this.weights(:);
+            this.weights(abs(this.weights) < eps) = 0;
+            %this.weights = target * (inv(input' * input) * input');
         end
 
         %---transfer functions---%
@@ -100,7 +104,6 @@ classdef SupervisedHebbianLayer
             pvec(inds(1:num)) = -pvec(inds(1:num));
         end 
 
-        function output = dot
 
     end
 
