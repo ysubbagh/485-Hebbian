@@ -12,7 +12,7 @@ classdef SupervisedHebbianLayer
             if(isscalar(p1)) %input size passed
                 this.inputSize = p1;
                 %make weights 0 based on size
-                this.weights = zeros(p1);
+                this.weights = randn(this.inputSize,1);
             else %weights passed
                 this.weights = p1;
                 this.inputSize = size(this.weights, 1);
@@ -24,16 +24,22 @@ classdef SupervisedHebbianLayer
 
         %%forward function, compute the autoassociator
         function output = forward(this, input)
-            n = (this.weights * input); 
-            output = arrayfun(@this.doFunc, n);
+            output = zeros(this.inputSize, 1);
+            for i = 1:this.inputSize
+                n = this.weights(i, :) * input(i);
+                output(i) = this.doFunc(n);
+            end
         end
 
         %%training functions
         %one at a time
-        function new = train(old, input, target)
-            new.weights = old.weights + (target' * input);
+        function this = train(this, input, target)
+            input = input(:);
+            target = target(:);
+            this.weights = this.weights + this.learningRate * (target' * input);
         end
 
+        %training using the pseudoinverse rule
         function this = pseudoInverseRule(this, input, target)
             this.weights = target * (inv(input' * input) * input');
         end
@@ -72,7 +78,7 @@ classdef SupervisedHebbianLayer
         end
         %purelins
         function f = purelin(this, n)
-            if()
+            f = n;
         end
 
     end
@@ -93,6 +99,8 @@ classdef SupervisedHebbianLayer
             % then, use the first n elements to flip pixels
             pvec(inds(1:num)) = -pvec(inds(1:num));
         end 
+
+        function output = dot
 
     end
 

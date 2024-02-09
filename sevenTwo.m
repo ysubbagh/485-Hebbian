@@ -1,17 +1,16 @@
 %initalize the layer
-network = SupervisedHebbianLayer(4, "hardlim");
+network = SupervisedHebbianLayer(4, "hardlims");
 
 %input patterns
-p1 = [0 1 0 1];
-p2 = [1 0 1 1];
+p1 = [-1 1 -1 1];
+p2 = [1 -1 1 1];
 p = [p1; p2];
 
 %test pattern
 pt = [1 1 1 1];
 
 %training the network
-network = network.train(p1, p1);
-network = network.train(p2, p2);
+network = network.pseudoInverseRule(p, p);
 
 %test network
 output = network.forward(pt);

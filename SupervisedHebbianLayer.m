@@ -26,7 +26,7 @@ classdef SupervisedHebbianLayer
         function output = forward(this, input)
             output = zeros(this.inputSize, 1);
             for i = 1:this.inputSize
-                n = this.weights(i, :) * input(i);
+                n = this.weights(i, :) * input;
                 output(i) = this.doFunc(n);
             end
         end
@@ -39,8 +39,11 @@ classdef SupervisedHebbianLayer
             this.weights = this.weights + this.learningRate * (target' * input);
         end
 
+        %training using the pseudoinverse rule
         function this = pseudoInverseRule(this, input, target)
-            this.weights = target * (inv(input' * input) * input');
+            this.weights = target * pinv(input);
+            this.weights = this.weights(:);
+            %this.weights = target * (inv(input' * input) * input');
         end
 
         %---transfer functions---%
@@ -98,6 +101,7 @@ classdef SupervisedHebbianLayer
             % then, use the first n elements to flip pixels
             pvec(inds(1:num)) = -pvec(inds(1:num));
         end 
+
 
     end
 
