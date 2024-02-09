@@ -12,7 +12,7 @@ classdef SupervisedHebbianLayer
             if(isscalar(p1)) %input size passed
                 this.inputSize = p1;
                 %make weights 0 based on size
-                this.weights = ones(this.inputSize,1);
+                this.weights = randn(this.inputSize,1);
             else %weights passed
                 this.weights = p1;
                 this.inputSize = size(this.weights, 1);
@@ -34,7 +34,9 @@ classdef SupervisedHebbianLayer
         %%training functions
         %one at a time
         function this = train(this, input, target)
-            this.weights = this.weights + (target * input);
+            input = input(:);
+            target = target(:);
+            this.weights = this.weights + this.learningRate * (target' * input);
         end
 
         function this = pseudoInverseRule(this, input, target)
