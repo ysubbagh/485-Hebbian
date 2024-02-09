@@ -12,7 +12,7 @@ classdef SupervisedHebbianLayer
             if(isscalar(p1)) %input size passed
                 this.inputSize = p1;
                 %make weights 0 based on size
-                this.weights = zeros(p1);
+                this.weights = ones(this.inputSize,1);
             else %weights passed
                 this.weights = p1;
                 this.inputSize = size(this.weights, 1);
@@ -24,14 +24,17 @@ classdef SupervisedHebbianLayer
 
         %%forward function, compute the autoassociator
         function output = forward(this, input)
-            n = (this.weights * input); 
-            output = arrayfun(@this.doFunc, n);
+            output = zeros(this.inputSize, 1);
+            for i = 1:this.inputSize
+                n = this.weights(i, :) * input(i);
+                output(i) = this.doFunc(n);
+            end
         end
 
         %%training functions
         %one at a time
-        function new = train(old, input, target)
-            new.weights = old.weights + (target' * input);
+        function this = train(this, input, target)
+            this.weights = this.weights + (target * input);
         end
 
         function this = pseudoInverseRule(this, input, target)
