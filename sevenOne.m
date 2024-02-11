@@ -12,7 +12,6 @@ pt = [1 1 1 1];
 %training the network
 network = network.train(p1', p1');
 network = network.train(p2', p2');
-%network = network.train(p);
 
 %test network
 output = network.forward(pt);

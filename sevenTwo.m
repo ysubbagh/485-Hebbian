@@ -23,13 +23,3 @@ disp(network.weights);
 disp("output: ");
 disp(output);
 
-
-%are the patterns orthogonal?
-dotProd = dot(p1, p2);
-disp("dot product = " + dotProd);
-if(dotProd == 0)
-    disp("Patterns ARE orthogonal!");
-else
-    disp("Patterns are NOT orthogonal!");
-end
-

@@ -62,7 +62,7 @@ classdef SupervisedHebbianLayer
         function f = hardlims(this, n)
             if(n < 0)
                 f = -1;
-            else %% n >=0
+            else % n >=0
                 f = 1;
             end
         end
@@ -78,5 +78,54 @@ classdef SupervisedHebbianLayer
             output = arrayfun(@this.doFunc, n);
         end
 
+    end
+
+    methods (Static)
+        %%addNoise to a vector, distort it 
+        function pvec = addNoise(pvec, num)
+            % ADDNOISE Add noise to "binary" vector
+            % pvec pattern vector (-1 and 1)
+            % num number of elements to flip randomly
+            % Handle special case where there's no noise
+            if num == 0
+                return;
+            end
+            % first, generate a random permutation of all indices into pvec
+            inds = randperm(length(pvec));
+            % then, use the first n elements to flip pixels
+            pvec(inds(1:num)) = -pvec(inds(1:num));
+        end 
+
+        %calculate the erros of neuron given the target value and produced output
+        function e = errorLoss(a, t)
+            e = t - a;
+        end
+
+        %----different printing functions----%
+        %print the image out to a color map, use for weights (output) because of
+        %color scale
+        function printOut(vec)
+            %adjust to be printed, resshaped for matrix, inverted for grey scale
+            matrix = 1 - rot90(flipud(reshape(vec, 5, 6)), 3);
+            % Display the matrix using imagesc
+            imshow(matrix, 'InitialMagnification', 'fit', 'Colormap', gray);
+        end
+        
+        % Print to console, can be used for output or input
+        function printCon(vec)
+            %adjust to be printed, resshaped for matrix
+            matrix = rot90(flipud(reshape(vec, 5, 6)), 3);
+            %print by row
+            for i = 1:size(matrix, 1)
+                for j = 1:size(matrix, 2)
+                    if matrix(i, j) == -1
+                        fprintf(' ');
+                    else
+                        fprintf('■');
+                    end
+                end
+                fprintf('\n');
+            end
+        end
     end
 end
