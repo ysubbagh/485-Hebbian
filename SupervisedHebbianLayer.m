@@ -28,7 +28,7 @@ classdef SupervisedHebbianLayer
         function this = pseudoInverseRule(this, input, target)
             this.weights = target * pinv(input);
             %becuase reformatting weirdly
-            this.weights = this.weights(:);
+            %this.weights = this.weights(:);
             %because of negtaive zero
             this.weights(abs(this.weights) < eps) = 0;
             %this.weights = target * (inv(input' * input) * input');

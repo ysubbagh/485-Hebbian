@@ -10,10 +10,11 @@ p = [p1; p2];
 pt = [1 1 1 1];
 
 %training the network
-network = network.pseudoInverseRule(p, p);
+network = network.pseudoInverseRule(p1', p1');
+network = network.pseudoInverseRule(p2', p2');
 
 %test network
-output = network.forwardLoop(pt);
+output = network.forward(p2);
 
 %print for validation
 disp("weights: ");
@@ -22,8 +23,13 @@ disp(network.weights);
 disp("output: ");
 disp(output);
 
-%the network does not perform as expected, it should be better as their not
-%orthogoal but becuase they are linearly independatn it casues an issues
-%and the output without manipulation results in incorrect trainig
 
+%are the patterns orthogonal?
+dotProd = dot(p1, p2);
+disp("dot product = " + dotProd);
+if(dotProd == 0)
+    disp("Patterns ARE orthogonal!");
+else
+    disp("Patterns are NOT orthogonal!");
+end
 
