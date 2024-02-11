@@ -27,11 +27,17 @@ classdef SupervisedHebbianLayer
          %training using the pseudoinverse rule
         function this = pseudoInverseRule(this, input, target)
             this.weights = target * pinv(input);
-            %becuase reformatting weirdly
-            %this.weights = this.weights(:);
-            %because of negtaive zero
-            this.weights(abs(this.weights) < eps) = 0;
-            %this.weights = target * (inv(input' * input) * input');
+            % Define the threshold for rounding
+            threshold = 1e-6; % Adjust this threshold as needed
+            % Round the elements of the weights matrix to integers if they're close enough
+            [rows, cols] = size(this.weights);
+            for i = 1:rows
+                for j = 1:cols
+                    if abs(this.weights(i, j) - round(this.weights(i, j))) < threshold
+                        this.weights(i, j) = round(this.weights(i, j));
+                    end
+                end
+            end
         end
 
         %% --- forward ---
