@@ -12,7 +12,7 @@ classdef SupervisedHebbianLayer
             if(isscalar(p1)) %input size passed
                 this.inputSize = p1;
                 %make weights 0 based on size
-                this.weights = randn(this.inputSize,1);
+                this.weights = randn(this.inputSize,this.inputSize);
             else %weights passed
                 this.weights = p1;
                 this.inputSize = size(this.weights, 1);
@@ -23,7 +23,7 @@ classdef SupervisedHebbianLayer
         end
 
         %%forward function, compute the autoassociator
-        function output = forward(this, input)
+        function output = forwardLoop(this, input)
             output = zeros(this.inputSize, 1);
             for i = 1:this.inputSize
                 n = this.weights(i, :) * input;
@@ -31,19 +31,38 @@ classdef SupervisedHebbianLayer
             end
         end
 
+        function output = forwardOps(this, input)
+            %print for validation
+            disp("weights: ");
+            disp(this.weights);
+            
+            disp("input: ");
+            disp(input);
+            % Initialize the output vector
+    output = zeros(this.inputSize, 1);
+
+    % Compute the output for each neuron
+    for i = 1:this.inputSize
+        % Compute the net input for the current neuron
+        n = this.weights(i, :) * input;
+        
+        % Apply the transfer function and assign the result to the output vector
+        output(i) = this.doFunc(n);
+    end
+        end
+
         %%training functions
         %one at a time
         function this = train(this, input, target)
-            input = input(:);
-            target = target(:);
-            this.weights = this.weights + this.learningRate * (target' * input);
+            this.weights = this.weights + (target' * input);
         end
 
         %training using the pseudoinverse rule
         function this = pseudoInverseRule(this, input, target)
             this.weights = target * pinv(input);
-            %becuase reformati
+            %becuase reformatting weirdly
             this.weights = this.weights(:);
+            %because of negtaive zero
             this.weights(abs(this.weights) < eps) = 0;
             %this.weights = target * (inv(input' * input) * input');
         end

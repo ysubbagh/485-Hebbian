@@ -13,7 +13,7 @@ pt = [1 1 1 1];
 network = network.pseudoInverseRule(p, p);
 
 %test network
-output = network.forward(pt);
+output = network.forwardLoop(pt);
 
 %print for validation
 disp("weights: ");
