@@ -104,28 +104,22 @@ classdef SupervisedHebbianLayer
         %----different printing functions----%
         %print the image out to a color map, use for weights (output) because of
         %color scale
-        function printOut(vec)
+        function printNumbs(vec, fig_num, name)
             %adjust to be printed, resshaped for matrix, inverted for grey scale
+            figure(fig_num);
             matrix = 1 - rot90(flipud(reshape(vec, 5, 6)), 3);
             % Display the matrix using imagesc
             imshow(matrix, 'InitialMagnification', 'fit', 'Colormap', gray);
+            title('Number Visualization: ' + name);
         end
         
         % Print to console, can be used for output or input
-        function printCon(vec)
-            %adjust to be printed, resshaped for matrix
-            matrix = rot90(flipud(reshape(vec, 5, 6)), 3);
-            %print by row
-            for i = 1:size(matrix, 1)
-                for j = 1:size(matrix, 2)
-                    if matrix(i, j) == -1
-                        fprintf(' ');
-                    else
-                        fprintf('■');
-                    end
-                end
-                fprintf('\n');
-            end
+        function printWeights(vec, fig_num, name)
+            figure(fig_num);
+            imagesc(vec);
+            colormap(hsv);
+            colorbar;
+            title('Weight Visualization: ' + name);
         end
     end
 end
