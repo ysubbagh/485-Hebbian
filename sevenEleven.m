@@ -32,6 +32,7 @@ SupervisedHebbianLayer.printWeights(pseudoNet.weights, 8, "pseudoinverse trainin
 
 %% adding noise
 % Initialize accuracy matrix
+noiseLevels = [2 4 6];
 accuracyMatrixHebb = zeros(length(noiseLevels), 5);
 accuracyMatrixPS = zeros(length(noiseLevels), 5);
 
@@ -83,7 +84,7 @@ for j = 1:length(noiseLevels)
                 output0PS = testPS.forward(noisyInput0);
                 output1PS = testPS.forward(noisyInput1);
                 
-                % Check for correctness in hebb
+                % Check for correctness in psuedoinverse
                 if isCorrectlyClassified(output0PS, p0)
                     correctCountPS = correctCountPS + 1;
                 end
@@ -129,39 +130,34 @@ disp(accuracyMatrixHebb);
 disp(accuracyMatrixPS);
 
 %% print results
+xTicks = [2, 3, 4, 5, 6]; % Define the x-axis ticks
 % Plot the graph for hebb rule
 figure; % Create a new figure for the plot
 hold on; % Hold the plot to overlay multiple lines
-for i = 1:length(noiseLevels) % Iterate over each noise level
-    % Plot a line for each noise level
-    plot(1:size(accuracyMatrixHebb, 2), accuracyMatrixHebb(i, :), '-o', 'DisplayName', sprintf('Noise Level %d (pixels)', noiseLevels(i)));
+for i = 1:size(accuracyMatrixHebb, 1) % Iterate over each row (each noise level)
+    plot(xTicks, accuracyMatrixHebb(i, :), '-o', 'DisplayName', sprintf('Noise Level %d', xTicks(i)));
 end
 hold off; % Release the hold on the plot
-xlabel('Number of Input Patterns Stored');
+xlabel('Number of Input Patterns Stored for Training');
 ylabel('Classification Accuracy (%)');
 title('Network Performance of Hebbian Rule with Noisy Inputs');
 legend('show'); % Show the legend with noise level labels
 grid on;
-
-% Set x-axis limits to chop off data to the left of 2
-xticks([2, 3, 4, 5, 6]);
+xticks(2:6); % Set x-axis ticks to integers from 2 to 6
 
 % Plot the graph for pseudoinverse rule
 figure; % Create a new figure for the plot
 hold on; % Hold the plot to overlay multiple lines
-for i = 1:length(noiseLevels) % Iterate over each noise level
-    % Plot a line for each noise level
-    plot(1:size(accuracyMatrixPS, 2), accuracyMatrixPS(i, :), '-o', 'DisplayName', sprintf('Noise Level %d (pixels)', noiseLevels(i)));
+for i = 1:size(accuracyMatrixPS, 1) % Iterate over each row (each noise level)
+    plot(xTicks, accuracyMatrixPS(i, :), '-o', 'DisplayName', sprintf('Noise Level %d', xTicks(i)));
 end
 hold off; % Release the hold on the plot
-xlabel('Number of Input Patterns Stored');
+xlabel('Number of Input Patterns Stored for Training');
 ylabel('Classification Accuracy (%)');
 title('Network Performance of Pseudoinverse Rule with Noisy Inputs');
 legend('show'); % Show the legend with noise level labels
 grid on;
-
-% Set x-axis limits to chop off data to the left of 2
-xticks([2, 3, 4, 5, 6]);
+xticks(2:6); % Set x-axis ticks to integers from 2 to 6
 
 %% functions to aid
 %for noise addition, get the input patterns
