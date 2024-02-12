@@ -102,11 +102,6 @@ classdef SupervisedHebbianLayer
             pvec(inds(1:num)) = -pvec(inds(1:num));
         end 
 
-        %calculate the erros of neuron given the target value and produced output
-        function e = errorLoss(a, t)
-            e = t - a;
-        end
-
         %----different printing functions----%
         %print the image out to a color map, use for weights (output) because of
         %color scale

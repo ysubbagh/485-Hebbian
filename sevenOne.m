@@ -4,7 +4,6 @@ network = SupervisedHebbianLayer(4, "hardlims");
 %input patterns
 p1 = [-1 1 -1 1];
 p2 = [1 -1 1 1];
-p = [p1; p2];
 
 %test pattern
 pt = [1 1 1 1];
