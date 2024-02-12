@@ -131,11 +131,12 @@ disp(accuracyMatrixPS);
 
 %% print results
 xTicks = [2, 3, 4, 5, 6]; % Define the x-axis ticks
+names = [2, 4, 6];
 % Plot the graph for hebb rule
 figure; % Create a new figure for the plot
 hold on; % Hold the plot to overlay multiple lines
 for i = 1:size(accuracyMatrixHebb, 1) % Iterate over each row (each noise level)
-    plot(xTicks, accuracyMatrixHebb(i, :), '-o', 'DisplayName', sprintf('Noise Level %d', xTicks(i)));
+    plot(xTicks, accuracyMatrixHebb(i, :), '-o', 'DisplayName', sprintf('Noise Level %d pixels', names(i)));
 end
 hold off; % Release the hold on the plot
 xlabel('Number of Input Patterns Stored for Training');
@@ -149,7 +150,7 @@ xticks(2:6); % Set x-axis ticks to integers from 2 to 6
 figure; % Create a new figure for the plot
 hold on; % Hold the plot to overlay multiple lines
 for i = 1:size(accuracyMatrixPS, 1) % Iterate over each row (each noise level)
-    plot(xTicks, accuracyMatrixPS(i, :), '-o', 'DisplayName', sprintf('Noise Level %d', xTicks(i)));
+    plot(xTicks, accuracyMatrixPS(i, :), '-o', 'DisplayName', sprintf('Noise Level %d pixels', names(i)));
 end
 hold off; % Release the hold on the plot
 xlabel('Number of Input Patterns Stored for Training');
